@@ -4,10 +4,12 @@ on: push
 
 jobs: 
   game-of-life-test: 
-    runs-on: ubuntu-latest 
+    runs-on: ${{ matrix.os }} 
     strategy: 
+      fail-fast: false # No detiene los demás trabajos si uno falla
       matrix: 
-        java: [ '17', '21', '25' ]
+        java: [ '17', '21', '25' ] 
+        os: [ ubuntu-latest, windows-latest ] 
 
     steps: 
       - name: Checkout repo 
@@ -18,7 +20,6 @@ jobs:
         with: 
           maven-version: 3.8.2 
 
-      # Fragmento modificado con la variable de contexto
       - name: Set up JDK
         uses: actions/setup-java@v4 
         with: 
