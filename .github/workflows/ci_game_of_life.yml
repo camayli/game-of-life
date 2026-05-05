@@ -5,25 +5,26 @@ on: push
 jobs: 
   game-of-life-test: 
     runs-on: ubuntu-latest 
+    strategy: 
+      matrix: 
+        java: [ '17', '21', '25' ]
 
     steps: 
       - name: Checkout repo 
         uses: actions/checkout@v4 
 
-      # Configuración de Maven específica
       - name: Set up Maven
         uses: stCarolas/setup-maven@v5.1 
         with: 
           maven-version: 3.8.2 
 
-      # Configuración de Java específica
-      - name: Set up JDK 17
-        uses: actions/setup-java@v5 
+      # Fragmento modificado con la variable de contexto
+      - name: Set up JDK
+        uses: actions/setup-java@v4 
         with: 
           distribution: 'temurin' 
-          java-version: '17' 
+          java-version: ${{ matrix.java }}
 
-      # Ahora ya puedes ejecutar los tests con las versiones configuradas
       - name: Maven test 
         run: mvn test
 
